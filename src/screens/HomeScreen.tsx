@@ -1,18 +1,25 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { FetchCurrentWeatherResponse } from "../types/api.types";
+import { HomeScreenType } from "../types/navigation.types";
 import { checkWeather } from "../utils/utils";
 
-const HomeScreen: FC = () => {
+const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
-  const [weatherData, setWeatherData] = useState<FetchCurrentWeatherResponse>();
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleCheckWeather = async () => {
     setLoading(true);
     const data = await checkWeather(city);
-    if (data) setWeatherData(data);
-    return setLoading(false);
+    if (!data) {
+      setLoading(false);
+      return setErrorMessage(
+        "Unable to fetch weather data. Please try again later."
+      );
+    }
+    setLoading(false);
+    return navigate("Weather", data);
   };
 
   return (
@@ -25,6 +32,7 @@ const HomeScreen: FC = () => {
           placeholder="Enter city name"
         />
       </View>
+      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
       <View style={styles.buttonsContainer}>
         <Button
           color="blue"
@@ -38,9 +46,6 @@ const HomeScreen: FC = () => {
           onPress={() => console.log("city", city)}
           disabled={!city}
         />
-      </View>
-      <View>
-        <Text>{weatherData?.current.temp}</Text>
       </View>
     </View>
   );
@@ -76,5 +81,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 16,
+  },
+  errorMessage: {
+    color: "red",
+    fontSize: 16,
   },
 });
