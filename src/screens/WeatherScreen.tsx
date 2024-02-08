@@ -1,9 +1,7 @@
 import { FC } from "react";
 import { Text, View } from "react-native";
 
-interface WeatherScreenProps {}
-
-const WeatherScreen: FC<WeatherScreenProps> = () => {
+const WeatherScreen: FC = () => {
   return (
     <View>
       <Text>Weather Screen</Text>

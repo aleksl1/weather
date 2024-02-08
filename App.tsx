@@ -1,12 +1,7 @@
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
-import HomeScreen from "./src/screens/HomeScreen";
-import WeatherScreen from "./src/screens/WeatherScreen";
-
-const Tab = createBottomTabNavigator();
+import BottomTabsNavigator from "./src/navigators/BottomTabsNavigator";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,26 +33,7 @@ export default function App() {
   }
   return (
     <NavigationContainer onReady={onLayoutRootView}>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" color={color} size={size} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Weather"
-          component={WeatherScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="cloud" color={color} size={size} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+      <BottomTabsNavigator />
     </NavigationContainer>
   );
 }
