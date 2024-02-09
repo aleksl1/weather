@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import { useEffect, useRef, useState } from "react";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
-import { FetchCurrentWeatherResponse } from "../types/api.types";
+import SaveCity from "../components/SaveCity";
 import { HomeScreenType } from "../types/navigation.types";
-import { checkWeather } from "../utils/utils";
 import { colors } from "../utils/colors";
+import { checkWeather } from "../utils/utils";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
+  const { getItem } = useAsyncStorage("city");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const inputRef = useRef<TextInput>(null);
 
   const handleCheckWeather = async () => {
+    if (!city) return alert("Please enter a city name.");
     setLoading(true);
     const data = await checkWeather(city);
     if (!data) {
@@ -23,10 +27,22 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
     return navigate("Weather", { ...data, city });
   };
 
+  useEffect(() => {
+    const retrieveCity = async () => {
+      const city = await getItem();
+      if (city) {
+        setCity(city);
+      }
+    };
+    retrieveCity();
+    inputRef.current?.focus();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <TextInput
+          ref={inputRef}
           value={city}
           onChangeText={(text) => setCity(text)}
           style={[styles.input, styles.border]}
@@ -35,20 +51,13 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
         />
       </View>
       {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
-      <View style={styles.buttonsContainer}>
-        <Button
-          color={colors.primary}
-          title="Check Weather"
-          onPress={handleCheckWeather}
-          disabled={loading || !city}
-        />
-        <Button
-          color={colors.tertiary}
-          title="Remember this city"
-          onPress={() => console.log("city", city)}
-          disabled={!city}
-        />
-      </View>
+      <Button
+        color={colors.secondary}
+        title="Check Weather 🔆"
+        onPress={handleCheckWeather}
+        disabled={loading}
+      />
+      {city && <SaveCity city={city} onClear={() => setCity("")} />}
     </View>
   );
 };
@@ -72,11 +81,6 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     justifyContent: "center",
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
   },
   border: {
     borderColor: colors.primary,
