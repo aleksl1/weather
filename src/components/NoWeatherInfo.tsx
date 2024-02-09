@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FC } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import MyText from "./MyText";
+import { colors } from "../utils/colors";
 
 type NoWeatherInfoProps = {
   navigateToHome: () => void;
@@ -32,10 +33,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 8,
     paddingHorizontal: 16,
-    borderColor: "#1f388b",
+    borderColor: colors.icon,
   },
   iconButtonText: {
     fontSize: 20,
-    color: "#1f388b",
+    color: colors.icon,
   },
 });

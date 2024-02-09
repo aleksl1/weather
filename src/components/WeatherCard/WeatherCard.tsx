@@ -3,6 +3,7 @@ import { View, StyleSheet } from "react-native";
 import MyText from "../MyText";
 import WeatherDetails from "./WeatherDetails";
 import { WeatherDataType } from "../../types/navigation.types";
+import { colors } from "../../utils/colors";
 
 type WeatherCardProps = WeatherDataType;
 
@@ -41,14 +42,14 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "space-around",
     marginTop: 36,
-    backgroundColor: "#83bce5",
+    backgroundColor: colors.secondary,
     borderRadius: 8,
     paddingHorizontal: 16,
   },
   weatherCard: {
     padding: 32,
     borderRadius: 8,
-    backgroundColor: "lightblue",
+    backgroundColor: colors.primary,
     opacity: 0.8,
     margin: 16,
   },

@@ -3,6 +3,7 @@ import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { FetchCurrentWeatherResponse } from "../types/api.types";
 import { HomeScreenType } from "../types/navigation.types";
 import { checkWeather } from "../utils/utils";
+import { colors } from "../utils/colors";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
@@ -30,18 +31,19 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
           onChangeText={(text) => setCity(text)}
           style={[styles.input, styles.border]}
           placeholder="Enter city name"
+          placeholderTextColor={colors.tertiary}
         />
       </View>
       {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
       <View style={styles.buttonsContainer}>
         <Button
-          color="blue"
+          color={colors.primary}
           title="Check Weather"
           onPress={handleCheckWeather}
           disabled={loading || !city}
         />
         <Button
-          color="#120101a3"
+          color={colors.tertiary}
           title="Remember this city"
           onPress={() => console.log("city", city)}
           disabled={!city}
@@ -77,13 +79,13 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   border: {
-    borderColor: "blue",
-    borderWidth: 1,
+    borderColor: colors.primary,
+    borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 16,
   },
   errorMessage: {
-    color: "red",
+    color: colors.error,
     fontSize: 16,
   },
 });
