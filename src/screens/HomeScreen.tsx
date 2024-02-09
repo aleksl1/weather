@@ -19,7 +19,7 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
       );
     }
     setLoading(false);
-    return navigate("Weather", data);
+    return navigate("Weather", { ...data, city });
   };
 
   return (
