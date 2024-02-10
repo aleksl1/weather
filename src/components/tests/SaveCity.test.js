@@ -15,12 +15,14 @@ describe('SaveCity Component', () => {
   let component;
   let setItemMock;
   let removeItemMock;
+  let getItemMock;
 
   beforeEach(() => {
+    getItemMock = jest.fn();
     setItemMock = jest.fn();
     removeItemMock = jest.fn().mockResolvedValue();
     useAsyncStorage.mockReturnValue({
-      getItem: jest.fn(),
+      getItem: getItemMock,
       setItem: setItemMock,
       removeItem: removeItemMock,
     });
@@ -51,5 +53,20 @@ describe('SaveCity Component', () => {
     });
     expect(removeItemMock).toHaveBeenCalled()
     expect(onClearMock).toHaveBeenCalled();
+  });
+  
+
+  it('renders Save City button disabled when city is not provided', () => {
+    component = renderer.create(
+      <SaveCity city="" onClear={() => {}} />
+    );
+    const saveCityButton = component.root.findByProps({ testID: "save-city-button" });
+    expect(saveCityButton.props.disabled).toBe(true);
+  });
+
+  it('renders Save City button enabled when city is provided', () => {
+    component.update(<SaveCity city="London" onClear={() => {}} />);
+    const saveCityButton = component.root.findByProps({ testID: "save-city-button" });
+    expect(saveCityButton.props.disabled).toBe(false);
   });
 })
