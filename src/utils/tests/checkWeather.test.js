@@ -32,28 +32,24 @@ describe('checkWeather', () => {
     expect(result).toEqual(MOCK_WEATHER_DATA);
   });
 
-  it('should return an alert message if city data cannot be fetched', async () => {
+  it('should return null if city data cannot be fetched', async () => {
     fetchCityData.mockResolvedValue(null);
 
-    global.alert = jest.fn();
-
-    await checkWeather(MOCK_CITY);
+    const result = await checkWeather(MOCK_CITY);
 
     expect(fetchCityData).toHaveBeenCalledWith(MOCK_CITY);
     expect(fetchCurrentWeather).not.toHaveBeenCalled();
-    expect(global.alert).toHaveBeenCalledWith("Failed to get data for the city! Please try again later.");
+    expect(result).toEqual(null);
   });
 
-  it('should return an alert message if weather data cannot be fetched', async () => {
+  it('should return null if weather data cannot be fetched', async () => {
     fetchCityData.mockResolvedValue(MOCK_CITY_DATA);
     fetchCurrentWeather.mockResolvedValue(null);
 
-    global.alert = jest.fn();
-
-    await checkWeather(MOCK_CITY);
+    const result = await checkWeather(MOCK_CITY);
 
     expect(fetchCityData).toHaveBeenCalledWith(MOCK_CITY);
     expect(fetchCurrentWeather).toHaveBeenCalledWith(MOCK_CITY_DATA.lat, MOCK_CITY_DATA.lon);
-    expect(global.alert).toHaveBeenCalledWith("Failed to get weather data! Please try again later.");
+    expect(result).toEqual(null);
   });
 });
