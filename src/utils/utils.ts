@@ -12,3 +12,10 @@ export const checkWeather = async (city: string) => {
   }
   return weatherData;
 };
+
+export const displayTemperature = (temp: number) => {
+  if (isNaN(temp) || temp === null) {
+    return 'N/A';
+  }
+  return `${Math.ceil(temp)}°C`
+};
