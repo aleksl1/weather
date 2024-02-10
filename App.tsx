@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect, useState } from "react";
 import BottomTabsNavigator from "./src/navigators/BottomTabsNavigator";
+import { StatusBar } from "expo-status-bar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,8 +33,11 @@ export default function App() {
     return null;
   }
   return (
-    <NavigationContainer onReady={onLayoutRootView}>
-      <BottomTabsNavigator />
-    </NavigationContainer>
+    <>
+      <StatusBar style="auto" />
+      <NavigationContainer onReady={onLayoutRootView}>
+        <BottomTabsNavigator />
+      </NavigationContainer>
+    </>
   );
 }
