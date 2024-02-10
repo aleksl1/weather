@@ -4,6 +4,7 @@ import MyText from "../MyText";
 import WeatherDetails from "./WeatherDetails";
 import { WeatherDataType } from "../../types/navigation.types";
 import { colors } from "../../utils/colors";
+import { displayTemperature } from "../../utils/utils";
 
 type WeatherCardProps = WeatherDataType;
 
@@ -14,12 +15,9 @@ const WeatherCard: FC<WeatherCardProps> = ({
   return (
     <View style={styles.weatherCard}>
       <MyText style={styles.cityText}>{city}</MyText>
-      <MyText style={styles.tempText}>
-        {Math.ceil(temp)} {"\u00B0"}C
-      </MyText>
+      <MyText style={styles.tempText}>{displayTemperature(temp)}</MyText>
       <MyText style={styles.feelsLikeText}>
-        feels like: {Math.ceil(feels_like)}
-        {"\u00B0"}C
+        feels like: {displayTemperature(feels_like)}
       </MyText>
       <View style={styles.weatherDetailsContainer}>
         {weather.map(({ description, icon }, index) => (
