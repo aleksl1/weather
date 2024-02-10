@@ -1,11 +1,10 @@
 import { FetchCityDataResponse, FetchCurrentWeatherResponse } from "../types/api.types";
-
-const API_KEY = process.env.EXPO_PUBLIC_API_KEY;
+import { endpoints } from "./endpoints";
 
 export const fetchCurrentWeather = async (lat: number, lon: number) => {
  try {
     const response = await fetch(
-       `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&appid=${API_KEY}&units=metric`
+       endpoints.currentWeather(lat, lon)
     );
     if(!response.ok) {
       throw new Error('Failed to fetch weather data');
@@ -20,7 +19,7 @@ export const fetchCurrentWeather = async (lat: number, lon: number) => {
 export const fetchCityData = async (city: string) => {
  try {
     const response = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${API_KEY}`
+      endpoints.cityData(city)
     );
     if(!response.ok) {
       throw new Error('Failed to fetch city data');
