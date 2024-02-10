@@ -24,11 +24,13 @@ const SaveCity: FC<SaveCityProps> = ({ city, onClear }) => {
   return (
     <View>
       <Button
+        testID="save-city-button"
         title="Save City"
         onPress={async () => await setItem(city, () => setIsInStorage(true))}
         disabled={!city}
       />
       <Button
+        testID="clear-city-button"
         title="Clear City"
         onPress={async () => {
           await removeItem();
