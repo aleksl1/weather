@@ -13,7 +13,11 @@ const NoWeatherInfo: FC<NoWeatherInfoProps> = ({ navigateToHome }) => {
     <>
       <MyText>There is no weather data available</MyText>
       <MyText>You need to go to Home and enter city name</MyText>
-      <Pressable style={styles.iconButton} onPress={navigateToHome}>
+      <Pressable
+        testID="go-to-home-button"
+        style={styles.iconButton}
+        onPress={navigateToHome}
+      >
         <Ionicons name="arrow-back" size={24} color={colors.icon} />
         <MyText style={styles.iconButtonText}>Go to Home</MyText>
       </Pressable>
