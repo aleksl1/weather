@@ -17,5 +17,5 @@ export const displayTemperature = (temp: number) => {
   if (isNaN(temp) || temp === null) {
     return 'N/A';
   }
-  return `${Math.ceil(temp)}°C`
+  return `${Math.round(temp)}°C`
 };
