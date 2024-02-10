@@ -9,6 +9,8 @@ export type BottomTabNavigatorParamList = {
   Weather: WeatherDataType | undefined
 };
 
-export type HomeScreenType = FC<BottomTabScreenProps<BottomTabNavigatorParamList, "Home">>;
+type ScreenType<T extends keyof BottomTabNavigatorParamList> = FC<BottomTabScreenProps<BottomTabNavigatorParamList, T>>;
 
-export type WeatherScreenType = FC<BottomTabScreenProps<BottomTabNavigatorParamList, "Weather">>;
+export type HomeScreenType = ScreenType<"Home">;
+
+export type WeatherScreenType = ScreenType<"Weather">
