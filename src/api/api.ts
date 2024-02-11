@@ -22,6 +22,7 @@ export const fetchCityData = async (city: string) => {
       endpoints.cityData(city)
     );
     if(!response.ok) {
+      if(response.status === 401) alert('Invalid API key')
       throw new Error('Failed to fetch city data');
     }
     const data: FetchCityDataResponse = await response.json();
