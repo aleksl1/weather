@@ -21,7 +21,7 @@ const useRetrieveCity = ({
     };
 
     retrieveCity();
-  }, [getItem, setCity, setIsInStorage]);
+  }, [setCity, setIsInStorage]);
 };
 
 export default useRetrieveCity;
