@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from "react";
-import { Button, View } from "react-native";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+import { FC, useEffect, useState } from "react";
+import { Button, StyleSheet, View } from "react-native";
 
 type SaveCityProps = {
   city: string;
@@ -22,16 +22,16 @@ const SaveCity: FC<SaveCityProps> = ({ city, onClear }) => {
   }, []);
 
   return (
-    <View>
+    <View style={styles.container}>
       <Button
-        title="Save City"
+        title="Save as favourite"
         onPress={async () => await setItem(city, () => setIsInStorage(true))}
-        disabled={!city}
+        disabled={!city || isInStorage}
       />
       <Button
         title="Clear City"
         onPress={async () => {
-          await removeItem();
+          await removeItem(() => setIsInStorage(false));
           onClear();
         }}
         disabled={!isInStorage}
@@ -41,3 +41,13 @@ const SaveCity: FC<SaveCityProps> = ({ city, onClear }) => {
 };
 
 export default SaveCity;
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    borderRadius: 8,
+    gap: 16,
+  },
+});

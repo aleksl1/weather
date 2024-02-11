@@ -44,25 +44,30 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.errorMessage}>{errorMessage}</Text>
       <View style={styles.inputContainer}>
         <TextInput
           ref={inputRef}
           value={city}
-          onChangeText={(text) => setCity(text)}
+          onChangeText={(text) => {
+            setCity(text);
+            setErrorMessage("");
+          }}
           style={[styles.input, styles.border]}
           placeholder="Enter city name"
           placeholderTextColor={colors.tertiary}
-          onFocus={() => setErrorMessage("")}
+          onBlur={() => setErrorMessage("")}
         />
       </View>
-      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
-      <Button
-        color={colors.secondary}
-        title="Check Weather 🔆"
-        onPress={handleCheckWeather}
-        disabled={loading}
-      />
-      {city && <SaveCity city={city} onClear={() => setCity("")} />}
+      <View style={[styles.buttonContainer, styles.border]}>
+        <Button
+          color={colors.tertiary}
+          title="Check Weather 🔆"
+          onPress={handleCheckWeather}
+          disabled={loading}
+        />
+      </View>
+      <SaveCity city={city} onClear={() => setCity("")} />
     </View>
   );
 };
@@ -75,13 +80,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 32,
-    gap: 16,
+    gap: 8,
   },
   input: {
     width: "100%",
     padding: 8,
     height: 50,
     fontSize: 25,
+    color: colors.tertiary,
   },
   inputContainer: {
     flexDirection: "row",
@@ -95,6 +101,10 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: colors.error,
-    fontSize: 16,
+    fontSize: 12,
+  },
+  buttonContainer: {
+    width: "100%",
+    backgroundColor: colors.primary,
   },
 });
