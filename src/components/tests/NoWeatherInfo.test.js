@@ -17,8 +17,8 @@ describe('NoWeatherInfo Component', () => {
     const component = renderer.create(
       <NoWeatherInfo navigateToHome={navigateToHomeMock} />
     );
-    const pressable = component.root.findByProps({testID: 'go-to-home-button'});
-    pressable.props.onPress();
+    const goToHomeButton = component.root.findByProps({testID: 'go-to-home'});
+    goToHomeButton.props.onPress();
     expect(navigateToHomeMock).toHaveBeenCalled();
   });
 });

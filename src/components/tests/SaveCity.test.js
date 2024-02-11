@@ -36,18 +36,18 @@ describe('SaveCity Component', () => {
     expect(tree).toMatchSnapshot();
   });
 
-  it('calls setItem when "Save City" button is pressed', async () => {
-    const saveCityButton = component.root.findByProps({testID: "save-city-button" });
+  it('calls setItem when "Save as favourite" button is pressed', async () => {
+    const saveCityButton = component.root.findByProps({testID: "save-as-favourite" });
     await act(async () => {
       saveCityButton.props.onPress();
     });
     expect(setItemMock).toHaveBeenCalled();
   });
 
-  it('calls removeItem and onClear when "Remove City" button is pressed', async () => {
+  it('calls removeItem and onClear when "Clear city" button is pressed', async () => {
     const onClearMock = jest.fn();
     component.update(<SaveCity city="London" onClear={onClearMock} />);
-    const clearCityButton = component.root.findByProps({testID: "clear-city-button" });
+    const clearCityButton = component.root.findByProps({testID: "clear-city" });
     await act(() => {
       clearCityButton.props.onPress();
     });
@@ -56,17 +56,17 @@ describe('SaveCity Component', () => {
   });
   
 
-  it('renders Save City button disabled when city is not provided', () => {
+  it('renders "Save as favourite" button disabled when city is not provided', () => {
     component = renderer.create(
       <SaveCity city="" onClear={() => {}} />
     );
-    const saveCityButton = component.root.findByProps({ testID: "save-city-button" });
+    const saveCityButton = component.root.findByProps({ testID: "save-as-favourite" });
     expect(saveCityButton.props.disabled).toBe(true);
   });
 
-  it('renders Save City button enabled when city is provided', () => {
+  it('renders "Save as favourite" button enabled when city is provided', () => {
     component.update(<SaveCity city="London" onClear={() => {}} />);
-    const saveCityButton = component.root.findByProps({ testID: "save-city-button" });
+    const saveCityButton = component.root.findByProps({ testID: "save-as-favourite" });
     expect(saveCityButton.props.disabled).toBe(false);
   });
 })

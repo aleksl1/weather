@@ -25,12 +25,14 @@ const SaveCity: FC<SaveCityProps> = ({ city, onClear }) => {
   return (
     <View style={styles.container}>
       <CustomButton
+        testID="save-as-favourite"
         text="Save as favourite"
         onPress={async () => await setItem(city, () => setIsInStorage(true))}
         disabled={!city || isInStorage}
         buttonColor="transparent"
       />
       <CustomButton
+        testID="clear-city"
         text="Clear City"
         onPress={async () => {
           await removeItem(() => setIsInStorage(false));
