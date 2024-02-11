@@ -1,16 +1,16 @@
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { Dispatch, SetStateAction, useEffect } from "react";
 
 type UseRetrieveCityType = {
-  getItem: () => Promise<string | null>;
   setCity?: Dispatch<SetStateAction<string>>;
   setIsInStorage?: Dispatch<SetStateAction<boolean>>;
 };
 
 const useRetrieveCity = ({
-  getItem,
   setCity,
   setIsInStorage,
 }: UseRetrieveCityType) => {
+  const { getItem } = useAsyncStorage("city");
   useEffect(() => {
     const retrieveCity = async () => {
       const city = await getItem();
