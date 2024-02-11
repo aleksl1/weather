@@ -3,12 +3,19 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import WeatherScreen from "../screens/WeatherScreen";
 import { BottomTabNavigatorParamList } from "../types/navigation.types";
+import { colors } from "../utils/colors";
 
 const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>();
 
 const BottomTabsNavigator = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator
+      screenOptions={{
+        headerTitleAlign: "center",
+        headerStyle: { backgroundColor: colors.primary },
+        tabBarStyle: { backgroundColor: colors.primary },
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
