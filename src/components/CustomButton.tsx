@@ -4,14 +4,14 @@ import {
   Text,
   StyleSheet,
   PressableProps,
-  TextStyle,
   View,
+  TextProps,
 } from "react-native";
 import { colors } from "../utils/colors";
 
 type CheckWeatherButtonProps = PressableProps & {
   text: string;
-  textStyles?: TextStyle;
+  textProps?: TextProps;
   buttonColor?: string;
   buttonPressedColor?: string;
   textColor?: string;
@@ -21,7 +21,7 @@ type CheckWeatherButtonProps = PressableProps & {
 
 const CustomButton: FC<CheckWeatherButtonProps> = ({
   text,
-  textStyles,
+  textProps,
   buttonColor = colors.primary,
   buttonPressedColor = colors.secondary,
   textColor = colors.tertiary,
@@ -49,8 +49,8 @@ const CustomButton: FC<CheckWeatherButtonProps> = ({
             style={[
               { color: pressed ? textPressedColor : textColor },
               styles.buttonText,
-              textStyles,
             ]}
+            {...textProps}
           >
             {text}
           </Text>
