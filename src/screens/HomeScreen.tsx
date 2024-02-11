@@ -6,6 +6,7 @@ import SaveCity from "../components/SaveCity";
 import { HomeScreenType } from "../types/navigation.types";
 import { colors } from "../utils/colors";
 import { checkWeather, validateCityInput } from "../utils/utils";
+import useRetrieveCity from "../hooks/useRetrieveCity";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
@@ -31,21 +32,17 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   };
 
   useEffect(() => {
-    const retrieveCity = async () => {
-      const city = await getItem();
-      if (city) {
-        setCity(city);
-      }
-    };
-    retrieveCity();
     inputRef.current?.focus();
   }, []);
+
+  useRetrieveCity({ getItem, setCity });
 
   return (
     <View style={styles.container}>
       <Text style={styles.errorMessage}>{errorMessage}</Text>
       <View style={styles.inputContainer}>
         <TextInput
+          testID="city-input"
           ref={inputRef}
           value={city}
           onChangeText={(text) => {
@@ -60,6 +57,7 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
+          testID="check-weather"
           text="Check Weather 🔆"
           disabled={loading}
           onPress={handleCheckWeather}
