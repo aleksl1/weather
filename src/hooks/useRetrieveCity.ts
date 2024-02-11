@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 type UseRetrieveCityType = {
   getItem: () => Promise<string | null>;
-  setCity?: (city: string) => void;
-  setIsInStorage?: (isInStorage: boolean) => void;
+  setCity?: Dispatch<SetStateAction<string>>;
+  setIsInStorage?: Dispatch<SetStateAction<boolean>>;
 };
 
 const useRetrieveCity = ({
