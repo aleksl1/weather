@@ -10,10 +10,10 @@ type SaveCityProps = {
 };
 
 const SaveCity: FC<SaveCityProps> = ({ city, onClear }) => {
-  const { setItem, removeItem, getItem } = useAsyncStorage("city");
+  const { setItem, removeItem } = useAsyncStorage("city");
   const [isInStorage, setIsInStorage] = useState(false);
 
-  useRetrieveCity({ getItem, setIsInStorage });
+  useRetrieveCity({ setIsInStorage });
 
   return (
     <View style={styles.container}>
@@ -26,7 +26,7 @@ const SaveCity: FC<SaveCityProps> = ({ city, onClear }) => {
       />
       <CustomButton
         testID="clear-city"
-        text="Clear City"
+        text="Clear favourite"
         onPress={async () => {
           await removeItem(() => setIsInStorage(false));
           onClear();

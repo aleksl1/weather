@@ -10,7 +10,6 @@ import useRetrieveCity from "../hooks/useRetrieveCity";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
-  const { getItem } = useAsyncStorage("city");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const inputRef = useRef<TextInput>(null);
@@ -35,7 +34,7 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
     inputRef.current?.focus();
   }, []);
 
-  useRetrieveCity({ getItem, setCity });
+  useRetrieveCity({ setCity });
 
   return (
     <View style={styles.container}>

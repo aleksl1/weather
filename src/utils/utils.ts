@@ -3,15 +3,16 @@ import { fetchCityData, fetchCurrentWeather } from "../api/api";
 export const checkWeather = async (city: string) => {
   try {
     const cityData = await fetchCityData(city);
-    if (!cityData) {
+    if (!cityData || !cityData.lat || !cityData.lon) {
+      alert(`Failed to get data for ${city}. Make sure the city name is correct.`);
       throw new Error(
-        "Failed to get data for the city! Please try again later."
+        "Failed to get data for the city!"
       );
     }
     const { lat, lon } = cityData;
     const weatherData = await fetchCurrentWeather(lat, lon);
     if (!weatherData) {
-      throw new Error("Failed to get weather data! Please try again later.");
+      throw new Error("Failed to get weather data!");
     }
     return weatherData;
   } catch (error: any) {
@@ -28,7 +29,7 @@ export const displayTemperature = (temp: number) => {
 };
 
 export const validateCity = (city: string) => {
-  const cityNameRegex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/ 
+  const cityNameRegex = /^[\p{L}\s-]+$/u;
   return cityNameRegex.test(city)
 ;}
 
