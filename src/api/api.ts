@@ -31,7 +31,7 @@ export const fetchCityData = async (city: string) => {
   }
 }
 
-export const getIconUri = (icon: string) => `http://openweathermap.org/img/wn/${icon}.png`;
+export const getIconUri = (icon: string) => endpoints.icon(icon);
 
 
 
