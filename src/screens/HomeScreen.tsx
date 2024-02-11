@@ -4,7 +4,7 @@ import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import SaveCity from "../components/SaveCity";
 import { HomeScreenType } from "../types/navigation.types";
 import { colors } from "../utils/colors";
-import { checkWeather } from "../utils/utils";
+import { checkWeather, validateCity } from "../utils/utils";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
@@ -14,7 +14,10 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const inputRef = useRef<TextInput>(null);
 
   const handleCheckWeather = async () => {
-    if (!city) return alert("Please enter a city name.");
+    if (!city)
+      return setErrorMessage("Please enter a city name to check the weather.");
+    const isValid = validateCity(city);
+    if (!isValid) return setErrorMessage("Please enter a valid city name.");
     setLoading(true);
     const data = await checkWeather(city);
     if (!data) {
@@ -48,6 +51,7 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
           style={[styles.input, styles.border]}
           placeholder="Enter city name"
           placeholderTextColor={colors.tertiary}
+          onFocus={() => setErrorMessage("")}
         />
       </View>
       {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
