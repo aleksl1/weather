@@ -26,7 +26,7 @@ const SaveCity: FC<SaveCityProps> = ({ city, onClear }) => {
       />
       <CustomButton
         testID="clear-city"
-        text="Clear City"
+        text="Clear favourite"
         onPress={async () => {
           await removeItem(() => setIsInStorage(false));
           onClear();
