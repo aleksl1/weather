@@ -5,6 +5,7 @@ import {
   StyleSheet,
   PressableProps,
   TextStyle,
+  View,
 } from "react-native";
 import { colors } from "../utils/colors";
 
@@ -15,6 +16,7 @@ type CheckWeatherButtonProps = PressableProps & {
   buttonPressedColor?: string;
   textColor?: string;
   textPressedColor?: string;
+  leftIcon?: React.ReactNode;
 };
 
 const CustomButton: FC<CheckWeatherButtonProps> = ({
@@ -24,6 +26,8 @@ const CustomButton: FC<CheckWeatherButtonProps> = ({
   buttonPressedColor = colors.secondary,
   textColor = colors.tertiary,
   textPressedColor = colors.primary,
+  disabled,
+  leftIcon,
   ...rest
 }) => {
   return (
@@ -31,21 +35,26 @@ const CustomButton: FC<CheckWeatherButtonProps> = ({
       style={({ pressed }) => [
         {
           backgroundColor: pressed ? buttonPressedColor : buttonColor,
+          opacity: disabled ? 0.5 : 1,
         },
         styles.buttonContainer,
       ]}
+      disabled={disabled}
       {...rest}
     >
       {({ pressed }) => (
-        <Text
-          style={[
-            { color: pressed ? textPressedColor : textColor },
-            styles.buttonText,
-            textStyles,
-          ]}
-        >
-          {text}
-        </Text>
+        <View style={styles.buttonContentContainer}>
+          {leftIcon && leftIcon}
+          <Text
+            style={[
+              { color: pressed ? textPressedColor : textColor },
+              styles.buttonText,
+              textStyles,
+            ]}
+          >
+            {text}
+          </Text>
+        </View>
       )}
     </Pressable>
   );
@@ -60,8 +69,12 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderColor: colors.primary,
     borderWidth: 2,
-    // width: "100%",
-    // flexBasis: "100%",
+  },
+  buttonContentContainer: {
+    flexDirection: "row",
+    gap: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
   buttonText: {
     textAlign: "center",
