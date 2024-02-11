@@ -2,6 +2,7 @@ import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { FC, useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import CustomButton from "./CustomButton";
+import useRetrieveCity from "../hooks/useRetrieveCity";
 
 type SaveCityProps = {
   city: string;
@@ -12,25 +13,19 @@ const SaveCity: FC<SaveCityProps> = ({ city, onClear }) => {
   const { setItem, removeItem, getItem } = useAsyncStorage("city");
   const [isInStorage, setIsInStorage] = useState(false);
 
-  useEffect(() => {
-    const retrieveCity = async () => {
-      const city = await getItem();
-      if (city) {
-        setIsInStorage(true);
-      }
-    };
-    retrieveCity();
-  }, []);
+  useRetrieveCity({ getItem, setIsInStorage });
 
   return (
     <View style={styles.container}>
       <CustomButton
+        testID="save-as-favourite"
         text="Save as favourite"
         onPress={async () => await setItem(city, () => setIsInStorage(true))}
         disabled={!city || isInStorage}
         buttonColor="transparent"
       />
       <CustomButton
+        testID="clear-city"
         text="Clear City"
         onPress={async () => {
           await removeItem(() => setIsInStorage(false));

@@ -14,6 +14,7 @@ const NoWeatherInfo: FC<NoWeatherInfoProps> = ({ navigateToHome }) => {
       <MyText>There is no weather data available</MyText>
       <MyText>You need to go to Home and enter city name</MyText>
       <CustomButton
+        testID="go-to-home"
         onPress={navigateToHome}
         text="Go to Home"
         leftIcon={
