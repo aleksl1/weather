@@ -1,6 +1,7 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import CustomButton from "../components/CustomButton";
 import SaveCity from "../components/SaveCity";
 import { HomeScreenType } from "../types/navigation.types";
 import { colors } from "../utils/colors";
@@ -59,12 +60,11 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
           onBlur={() => setErrorMessage("")}
         />
       </View>
-      <View style={[styles.buttonContainer, styles.border]}>
-        <Button
-          color={colors.tertiary}
-          title="Check Weather 🔆"
-          onPress={handleCheckWeather}
+      <View style={styles.buttonContainer}>
+        <CustomButton
+          text="Check Weather 🔆"
           disabled={loading}
+          onPress={handleCheckWeather}
         />
       </View>
       <SaveCity city={city} onClear={() => setCity("")} />
@@ -105,6 +105,5 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
-    backgroundColor: colors.primary,
   },
 });
