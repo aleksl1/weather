@@ -2,6 +2,7 @@
 # Weather App
 
 App shows current weather for chosen city
+App runs on ios or android
 
 ## Steps to start app locally
 
