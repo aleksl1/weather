@@ -57,7 +57,6 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
-          testID="check-weather"
           text="Check Weather 🔆"
           disabled={loading}
           onPress={handleCheckWeather}
