@@ -1,5 +1,5 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import renderer, { act } from 'react-test-renderer';
 import HomeScreen from '../HomeScreen';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -19,7 +19,9 @@ describe('HomeScreen', () => {
     const component = renderer.create(<HomeScreen navigation={mockNavigation}/>);
     const input = component.root.findByProps({ testID: 'city-input' });
 
-    input.props.onChangeText('New York');
+    act(() => {
+      input.props.onChangeText('New York');
+    });
 
     expect(input.props.value).toBe('New York');
   });
