@@ -1,10 +1,11 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+import CustomButton from "../components/CustomButton";
 import SaveCity from "../components/SaveCity";
 import { HomeScreenType } from "../types/navigation.types";
 import { colors } from "../utils/colors";
-import { checkWeather } from "../utils/utils";
+import { checkWeather, validateCity } from "../utils/utils";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
@@ -14,9 +15,13 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const inputRef = useRef<TextInput>(null);
 
   const handleCheckWeather = async () => {
-    if (!city) return alert("Please enter a city name.");
+    if (!city)
+      return setErrorMessage("Please enter a city name to check the weather.");
+    const cityName = city.trim();
+    const isValid = validateCity(cityName);
+    if (!isValid) return setErrorMessage("Please enter a valid city name.");
     setLoading(true);
-    const data = await checkWeather(city);
+    const data = await checkWeather(cityName);
     if (!data) {
       setLoading(false);
       return setErrorMessage(
@@ -24,7 +29,7 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
       );
     }
     setLoading(false);
-    return navigate("Weather", { ...data, city });
+    return navigate("Weather", { ...data, city: cityName });
   };
 
   useEffect(() => {
@@ -40,24 +45,29 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.errorMessage}>{errorMessage}</Text>
       <View style={styles.inputContainer}>
         <TextInput
           ref={inputRef}
           value={city}
-          onChangeText={(text) => setCity(text)}
+          onChangeText={(text) => {
+            setCity(text);
+            setErrorMessage("");
+          }}
           style={[styles.input, styles.border]}
           placeholder="Enter city name"
           placeholderTextColor={colors.tertiary}
+          onBlur={() => setErrorMessage("")}
         />
       </View>
-      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
-      <Button
-        color={colors.secondary}
-        title="Check Weather 🔆"
-        onPress={handleCheckWeather}
-        disabled={loading}
-      />
-      {city && <SaveCity city={city} onClear={() => setCity("")} />}
+      <View style={styles.buttonContainer}>
+        <CustomButton
+          text="Check Weather 🔆"
+          disabled={loading}
+          onPress={handleCheckWeather}
+        />
+      </View>
+      <SaveCity city={city} onClear={() => setCity("")} />
     </View>
   );
 };
@@ -70,13 +80,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     margin: 32,
-    gap: 16,
+    gap: 8,
   },
   input: {
     width: "100%",
     padding: 8,
     height: 50,
     fontSize: 25,
+    color: colors.tertiary,
   },
   inputContainer: {
     flexDirection: "row",
@@ -90,6 +101,9 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: colors.error,
-    fontSize: 16,
+    fontSize: 12,
+  },
+  buttonContainer: {
+    width: "100%",
   },
 });

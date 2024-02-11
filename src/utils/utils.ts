@@ -26,3 +26,7 @@ export const displayTemperature = (temp: number) => {
   }
   return `${Math.round(temp)}°C`
 };
+
+export const validateCity = (city: string) => {
+  const cityNameRegex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/ 
+  return cityNameRegex.test(city);}
