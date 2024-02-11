@@ -5,7 +5,7 @@ import CustomButton from "../components/CustomButton";
 import SaveCity from "../components/SaveCity";
 import { HomeScreenType } from "../types/navigation.types";
 import { colors } from "../utils/colors";
-import { checkWeather, validateCity } from "../utils/utils";
+import { checkWeather, validateCityInput } from "../utils/utils";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
@@ -15,11 +15,9 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const inputRef = useRef<TextInput>(null);
 
   const handleCheckWeather = async () => {
-    if (!city)
-      return setErrorMessage("Please enter a city name to check the weather.");
     const cityName = city.trim();
-    const isValid = validateCity(cityName);
-    if (!isValid) return setErrorMessage("Please enter a valid city name.");
+    const errorMessage = validateCityInput(cityName);
+    if (errorMessage) return setErrorMessage(errorMessage);
     setLoading(true);
     const data = await checkWeather(cityName);
     if (!data) {

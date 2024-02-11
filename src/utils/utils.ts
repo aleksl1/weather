@@ -27,6 +27,14 @@ export const displayTemperature = (temp: number) => {
   return `${Math.round(temp)}°C`
 };
 
-export const validateCity = (city: string) => {
+const validateCity = (city: string) => {
   const cityNameRegex = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/ 
-  return cityNameRegex.test(city);}
+  return cityNameRegex.test(city)
+;}
+
+export const validateCityInput = (city: string) => {
+  if (!city) return "Please enter a city name to check the weather.";
+  const isValid = validateCity(city);
+  if (!isValid) return "Please enter a valid city name.";
+  return ""
+;}
