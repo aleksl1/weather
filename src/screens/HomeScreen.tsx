@@ -16,10 +16,11 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const handleCheckWeather = async () => {
     if (!city)
       return setErrorMessage("Please enter a city name to check the weather.");
-    const isValid = validateCity(city);
+    const cityName = city.trim();
+    const isValid = validateCity(cityName);
     if (!isValid) return setErrorMessage("Please enter a valid city name.");
     setLoading(true);
-    const data = await checkWeather(city);
+    const data = await checkWeather(cityName);
     if (!data) {
       setLoading(false);
       return setErrorMessage(
@@ -27,7 +28,7 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
       );
     }
     setLoading(false);
-    return navigate("Weather", { ...data, city });
+    return navigate("Weather", { ...data, city: cityName });
   };
 
   useEffect(() => {
