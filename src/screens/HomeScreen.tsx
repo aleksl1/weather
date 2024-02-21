@@ -42,6 +42,7 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
       );
     }
     setWeatherData({ ...data, city: cityName });
+    inputRef.current?.blur();
     setLoading(false);
   };
 
