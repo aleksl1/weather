@@ -14,14 +14,16 @@ const BottomTabsNavigator = () => {
         headerTitleAlign: "center",
         headerStyle: { backgroundColor: colors.primary },
         tabBarStyle: { backgroundColor: colors.primary },
+        headerShown: false,
       }}
     >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
+          title: "Today",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
+            <Ionicons name="sunny-sharp" color={color} size={size} />
           ),
         }}
       />
@@ -29,8 +31,9 @@ const BottomTabsNavigator = () => {
         name="Weather"
         component={WeatherScreen}
         options={{
+          title: "Weekly",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="cloud" color={color} size={size} />
+            <Ionicons name="calendar-outline" color={color} size={size} />
           ),
         }}
       />
