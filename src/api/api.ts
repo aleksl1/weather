@@ -1,4 +1,4 @@
-import { FetchCityDataResponse, FetchCurrentWeatherResponse } from "../types/api.types";
+import { FetchCityDataResponse, FetchCurrentWeatherResponse, FetchWeekWeatherResponse } from "../types/api.types";
 import { endpoints } from "./endpoints";
 
 export const fetchCurrentWeather = async (lat: number, lon: number) => {
@@ -33,6 +33,23 @@ export const fetchCityData = async (city: string) => {
 }
 
 export const getIconUri = (icon: string) => endpoints.icon(icon);
+
+//extended api
+
+export const fetchWeatherForaWeek = async (lat: number, lon: number) => {
+  try {
+     const response = await fetch(
+        endpoints.weekWeather(lat, lon)
+     );
+     if(!response.ok) {
+       throw new Error('Failed to fetch weather data');
+     }
+     const data:FetchWeekWeatherResponse = await response.json();
+     return data;
+   } catch (error: any) {
+     console.log(error.message);
+   }
+ }
 
 
 
