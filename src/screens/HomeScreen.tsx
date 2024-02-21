@@ -1,17 +1,32 @@
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useEffect, useRef, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
 import CustomButton from "../components/CustomButton";
 import SaveCity from "../components/SaveCity";
 import { HomeScreenType } from "../types/navigation.types";
 import { colors } from "../utils/colors";
 import { checkWeather, validateCityInput } from "../utils/utils";
 import useRetrieveCity from "../hooks/useRetrieveCity";
+import { FetchCurrentWeatherResponse } from "../types/api.types";
+import WeatherCard from "../components/WeatherCard/WeatherCard";
+import { Platform } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { DefaultTheme } from "@react-navigation/native";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [weatherData, setWeatherData] = useState<
+    FetchCurrentWeatherResponse & { city: string }
+  >();
   const inputRef = useRef<TextInput>(null);
 
   const handleCheckWeather = async () => {
@@ -26,8 +41,8 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
         "Unable to fetch weather data. Please try again later."
       );
     }
+    setWeatherData({ ...data, city: cityName });
     setLoading(false);
-    return navigate("Weather", { ...data, city: cityName });
   };
 
   useEffect(() => {
@@ -37,32 +52,71 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   useRetrieveCity({ setCity });
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.errorMessage}>{errorMessage}</Text>
-      <View style={styles.inputContainer}>
-        <TextInput
-          testID="city-input"
-          ref={inputRef}
-          value={city}
-          onChangeText={(text) => {
-            setCity(text);
-            setErrorMessage("");
-          }}
-          style={[styles.input, styles.border]}
-          placeholder="Enter city name"
-          placeholderTextColor={colors.tertiary}
-          onBlur={() => setErrorMessage("")}
-        />
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={16}
+    >
+      <Text style={styles.dateText}>Today is {new Date().toDateString()}</Text>
+      <View style={styles.divider}></View>
+      <View style={styles.weatherCardContainer}>
+        {weatherData && (
+          <>
+            <WeatherCard
+              city={weatherData.city}
+              current={weatherData.current}
+            />
+            <View style={styles.customButtonContainer}>
+              <CustomButton
+                leftIcon={
+                  <Ionicons
+                    name="calendar-outline"
+                    color={DefaultTheme.colors.primary}
+                    size={24}
+                  />
+                }
+                text="See Weekly Forecast"
+                onPress={() => navigate("Weather", { ...weatherData })}
+                buttonColor="transparent"
+              />
+            </View>
+          </>
+        )}
       </View>
-      <View style={styles.buttonContainer}>
-        <CustomButton
-          text="Check Weather 🔆"
-          disabled={loading}
-          onPress={handleCheckWeather}
-        />
+      <View style={styles.weatherFormContainer}>
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+        <View style={styles.inputContainer}>
+          <TextInput
+            testID="city-input"
+            ref={inputRef}
+            value={city}
+            onChangeText={(text) => {
+              setCity(text);
+              setErrorMessage("");
+            }}
+            style={[styles.input, styles.border]}
+            placeholder="Enter city name"
+            placeholderTextColor={colors.tertiary}
+            onBlur={() => setErrorMessage("")}
+          />
+        </View>
+        <SaveCity city={city} onClear={() => setCity("")} />
+        <View style={styles.buttonContainer}>
+          <CustomButton
+            leftIcon={
+              <Ionicons
+                name="sunny-sharp"
+                color={DefaultTheme.colors.primary}
+                size={24}
+              />
+            }
+            text="Check Weather"
+            disabled={loading}
+            onPress={handleCheckWeather}
+          />
+        </View>
       </View>
-      <SaveCity city={city} onClear={() => setCity("")} />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -71,7 +125,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "space-between",
     alignItems: "center",
     margin: 32,
     gap: 8,
@@ -99,5 +153,28 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
+  },
+  weatherFormContainer: {
+    width: "100%",
+    gap: 8,
+  },
+  weatherCardContainer: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  dateText: {
+    marginTop: 32,
+    width: "100%",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  customButtonContainer: {
+    marginHorizontal: 16,
+  },
+  divider: {
+    height: 2,
+    backgroundColor: colors.primary,
+    width: "100%",
+    marginHorizontal: 64,
   },
 });
