@@ -68,6 +68,7 @@ export type DailyWeatherDataType = {
   pressure: number;
   sunrise: number;
   sunset: number;
+  summary: string;
   temp: {
     day: number;
     min: number;
