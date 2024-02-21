@@ -1,8 +1,14 @@
-import { FC, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { FC, useEffect, useState } from "react";
+import { ScrollView, StyleSheet, View, Text } from "react-native";
 import { DailyWeatherDataType } from "../types/api.types";
 import WeatherCard from "./WeatherCard/WeatherCard";
 import WeatherCardSmall from "./WeatherCard/WeatherCardSmall";
+import {
+  getFormattedDateFromTimestamp,
+  getFormattedTimeFromTimestamp,
+} from "../utils/date";
+import { useFocusEffect } from "@react-navigation/native";
+import CustomButton from "./CustomButton";
 
 type WeeklyWatherProps = {
   city: string;
@@ -13,6 +19,26 @@ type WeeklyWatherProps = {
 
 const WeeklyWather: FC<WeeklyWatherProps> = ({ weeklyData, city }) => {
   const [selectedDay, setSelectedDay] = useState(0);
+  const [nightWeather, setNightWeather] = useState(false);
+
+  useEffect(() => {
+    setSelectedDay(0);
+  }, [weeklyData]);
+
+  const getCurrentWeatherCardProps = () => {
+    const {
+      temp: { night: nightTemp, day: dayTemp },
+      feels_like: { night: nightFeelsLike, day: dayFeelsLike },
+      weather,
+    } = weeklyData[selectedDay];
+    const temp = nightWeather ? nightTemp : dayTemp;
+    const feels_like = nightWeather ? nightFeelsLike : dayFeelsLike;
+    return {
+      temp,
+      feels_like,
+      weather,
+    };
+  };
 
   return (
     <View style={styles.container}>
@@ -35,13 +61,18 @@ const WeeklyWather: FC<WeeklyWatherProps> = ({ weeklyData, city }) => {
           );
         })}
       </ScrollView>
-      <WeatherCard
-        current={{
-          temp: weeklyData[selectedDay].temp.day,
-          feels_like: weeklyData[selectedDay].feels_like.day,
-          weather: weeklyData[selectedDay].weather,
-        }}
-        city={city}
+      <WeatherCard current={getCurrentWeatherCardProps()} city={city} />
+      <Text>{weeklyData[selectedDay].summary}</Text>
+      <Text>
+        Sunrise:{getFormattedTimeFromTimestamp(weeklyData[selectedDay].sunrise)}
+      </Text>
+      <Text>
+        Sunset:{getFormattedTimeFromTimestamp(weeklyData[selectedDay].sunset)}
+      </Text>
+      <Text>Pressure:{weeklyData[selectedDay].pressure} hPa</Text>
+      <CustomButton
+        text={nightWeather ? "Show Day Weather" : "Show Night Weather"}
+        onPress={() => setNightWeather(!nightWeather)}
       />
     </View>
   );
