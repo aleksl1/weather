@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Pressable, Text } from "react-native";
+import { Pressable, Text, StyleSheet } from "react-native";
 import { colors } from "../../utils/colors";
 import { getFormattedDateFromTimestamp } from "../../utils/date";
 import { displayTemperature } from "../../utils/utils";
@@ -22,15 +22,7 @@ const WeatherCardSmall: FC<WeatherCardSmallProps> = ({
 }) => {
   return (
     <Pressable
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 4,
-        padding: 8,
-        backgroundColor: "#426c7245",
-        borderWidth: isActive ? 2 : 0,
-        borderColor: colors.primary,
-      }}
+      style={[styles.pressable, { borderWidth: isActive ? 2 : 0 }]}
       onPress={onPress}
     >
       <Text>{getFormattedDateFromTimestamp(timestamp)}</Text>
@@ -41,3 +33,14 @@ const WeatherCardSmall: FC<WeatherCardSmallProps> = ({
 };
 
 export default WeatherCardSmall;
+
+const styles = StyleSheet.create({
+  pressable: {
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    padding: 8,
+    backgroundColor: "#426c7245",
+    borderColor: colors.primary,
+  },
+});

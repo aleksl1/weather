@@ -9,3 +9,11 @@ const formatDateDDMM = (date: Date) => {
     month: "short",
   });
 };
+
+export const getFormattedTodayDate = () => {
+  return new Date().toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    
+  });
+}

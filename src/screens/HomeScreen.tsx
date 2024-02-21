@@ -19,6 +19,7 @@ import WeatherCard from "../components/WeatherCard/WeatherCard";
 import { Platform } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { DefaultTheme } from "@react-navigation/native";
+import { getFormattedTodayDate } from "../utils/date";
 
 const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
   const [city, setCity] = useState("");
@@ -58,7 +59,7 @@ const HomeScreen: HomeScreenType = ({ navigation: { navigate } }) => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       keyboardVerticalOffset={16}
     >
-      <Text style={styles.dateText}>Today is {new Date().toDateString()}</Text>
+      <Text style={styles.dateText}>Today is {getFormattedTodayDate()}</Text>
       <View style={styles.divider}></View>
       <View style={styles.weatherCardContainer}>
         {weatherData && (
